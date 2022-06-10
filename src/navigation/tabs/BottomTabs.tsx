@@ -6,10 +6,13 @@ import CartScreen from '../../screens/main/cart/CartScreen';
 import PersonalScreen from '../../screens/main/personal/PersonalScreen';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {calculateWidth} from '../../constants/dimension';
+import {useAppSelector} from '../../app/hook';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default function MyTabs() {
+  const products = useAppSelector(state => state.cart.items);
+
   return (
     <Tab.Navigator
       activeColor="#6200EA"
@@ -50,6 +53,9 @@ export default function MyTabs() {
               size={calculateWidth(5)}
             />
           ),
+          tabBarBadge:
+            products.reduce((prev, current) => prev + current.qty, 0) ||
+            undefined,
         }}
         component={CartScreen}
       />

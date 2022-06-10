@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {TouchableOpacity, View, Text, StyleSheet, Image} from 'react-native';
 import {Button} from 'react-native-paper';
+import {useAppDispatch} from '../../app/hook';
 import {
   calculateHeight,
   calculateWidth,
   normalize,
 } from '../../constants/dimension';
+import {addToCart} from '../../features/cart/cartSlice';
 import {formatNumber} from '../../utilities';
 
 interface ProductItemComponentProps {
@@ -19,6 +21,19 @@ interface ProductItemComponentProps {
 }
 
 function ProductItemComponent(props: ProductItemComponentProps) {
+  const dispatch = useAppDispatch();
+
+  const onPressItem = () => {
+    dispatch(
+      addToCart({
+        item: {
+          ...props.item,
+          pid: props.item.id,
+        },
+      }),
+    );
+  };
+
   return (
     <TouchableOpacity
       style={styles.container}
@@ -28,7 +43,7 @@ function ProductItemComponent(props: ProductItemComponentProps) {
         <Text style={styles.name}>{props.item.name}</Text>
         <View style={styles.row}>
           <Text style={styles.price}>{formatNumber(props.item.price)}</Text>
-          <Button icon="plus" mode="contained">
+          <Button icon="plus" mode="contained" onPress={onPressItem}>
             {'1'}
           </Button>
         </View>

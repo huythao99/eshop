@@ -17,14 +17,38 @@ import {
 import {RootStackParamList} from '../../../interface/Navigation';
 import firestore from '@react-native-firebase/firestore';
 import {formatNumber} from '../../../utilities';
-import {Button} from 'react-native-paper';
+import {Button, Snackbar} from 'react-native-paper';
+import {useAppDispatch} from '../../../app/hook';
+import {addToCart} from '../../../features/cart/cartSlice';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'DetailProductScreen'>;
 
 export default function DetailProductScreen({navigation, route}: Props) {
+  const dispatch = useAppDispatch();
+
   const [data, setData] = React.useState<any>(null);
+  const [visible, setVisible] = React.useState(false);
+  const [timer, setTimer] = React.useState<any>(null);
+
+  const onDismissSnackBar = () => setVisible(false);
 
   const onGoBack = navigation.goBack;
+
+  const onClick = () => {
+    dispatch(
+      addToCart({
+        item: {
+          ...data,
+          pid: route.params.pid,
+        },
+      }),
+    );
+    setVisible(true);
+    let newTimer = setTimeout(() => {
+      onDismissSnackBar();
+    }, 2500);
+    setTimer(newTimer);
+  };
 
   const getData = async () => {
     const response = await firestore()
@@ -36,6 +60,9 @@ export default function DetailProductScreen({navigation, route}: Props) {
 
   React.useEffect(() => {
     getData();
+    return () => {
+      clearTimeout(timer);
+    };
   }, []);
 
   if (!data) {
@@ -54,11 +81,22 @@ export default function DetailProductScreen({navigation, route}: Props) {
       <Text style={styles.name}>{data.name}</Text>
       <View style={styles.row}>
         <Text style={styles.price}>{formatNumber(data.price)}</Text>
-        <Button icon="plus" mode="contained">
+        <Button icon="plus" mode="contained" onPress={onClick}>
           {'1'}
         </Button>
       </View>
       <Text style={styles.detail}>{data.detail}</Text>
+      <Snackbar
+        visible={visible}
+        onDismiss={onDismissSnackBar}
+        action={{
+          label: 'OK',
+          onPress: () => {
+            onDismissSnackBar();
+          },
+        }}>
+        Đã thêm sản phẩm vào giỏ hàng
+      </Snackbar>
     </ScrollView>
   );
 }
