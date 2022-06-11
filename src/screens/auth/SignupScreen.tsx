@@ -47,6 +47,9 @@ export default function SignupScreen({navigation}: Props) {
         .catch(error => {
           showAlert(error.message);
         });
+      auth().currentUser?.updateProfile({
+        displayName: userName,
+      });
     }
   };
 

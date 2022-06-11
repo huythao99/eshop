@@ -70,9 +70,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: normalize(15),
     fontWeight: 'bold',
+    color: '#000000',
   },
   price: {
     fontSize: normalize(15),
-    fontWeight: 'bold',
+    marginBottom: calculateHeight(0.5),
   },
 });
