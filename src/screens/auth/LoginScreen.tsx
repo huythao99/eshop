@@ -2,7 +2,11 @@ import * as React from 'react';
 import {View, StyleSheet, TouchableOpacity} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {Text, TextInput, useTheme} from 'react-native-paper';
-import {calculateHeight, calculateWidth} from '../../constants/dimension';
+import {
+  calculateHeight,
+  calculateWidth,
+  HEIGHT,
+} from '../../constants/dimension';
 import {Button} from 'react-native-paper';
 import {RootStackParamList} from '../../interface/Navigation';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
@@ -75,6 +79,7 @@ export default function LoginScreen({navigation}: Props) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    // height: HEIGHT,
     backgroundColor: '#FFFFFF',
   },
   header: {

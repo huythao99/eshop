@@ -1,5 +1,14 @@
 import * as React from 'react';
-import {StatusBar} from 'react-native';
+import {
+  Dimensions,
+  Image,
+  ImageBackground,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import {DefaultTheme, Provider as PaperProvider} from 'react-native-paper';
 import {Provider as StoreProvider} from 'react-redux';
 import AppNavigator from './AppNavigator';
